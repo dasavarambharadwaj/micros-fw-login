@@ -19,10 +19,10 @@ function Login() {
       const response = await api.post(LOGIN, values);
       const params = new URLSearchParams(window.location.search);
       const callbackUrl = params.get("callbackUrl") || "/";
-      const redirectUrl = params.get("redirectUrl") || "/";
-      window.location.href = `${redirectUrl}/callback?token=${
-        response.token
-      }&callbackUrl=${encodeURIComponent(callbackUrl)}`;
+      document.cookie = `auth_token=${response.token}; path=/; domain=${
+        new URL(callbackUrl).hostname
+      }`;
+      window.location.href = callbackUrl;
     } catch (e) {
       setErrorMessage(e.message);
       setShowAlert(true);
